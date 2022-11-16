@@ -30,5 +30,70 @@ sudo npm install -g yarn
 
 source ~/.bashrc
 
-echo -e "\nInstalling NVIM"
+echo -e "\nInstalling NeoVIM"
+wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
+sudo apt install ./nvim-linux64.deb
+rm -f nvim-linux64.deb
+
+echo -e "\nConfiguring NeoVIM"
+mkdir -p ~/.config/nvim
+echo -e "\nInstalling VIM Plug"
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+if test -f "~/.config/nvim/init.vim" then
+	cat <<EOT >> ~/.config/nvim/init.vim
+:set number
+:set relativenumber
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set smarttab
+:set softtabstop=4
+:set mouse=a
+:set clipboard=unnamedplus
+
+call plug#begin()
+
+Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
+Plug 'https://github.com/preservim/nerdtree' " NerdTree
+Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
+Plug 'https://github.com/vim-airline/vim-airline' " Status bar
+Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
+Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
+Plug 'https://github.com/ryanoasis/vim-devicons' " Developer Icons
+Plug 'https://github.com/tc50cal/vim-terminal' " Vim Terminal
+Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
+Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
+Plug 'https://github.com/lifepillar/pgsql.vim' " PSQL Pluging needs :SQLSetType pgsql.vim
+Plug 'https://github.com/neoclide/coc.nvim'  " Auto Completion
+
+set encoding=UTF-8
+
+call plug#end()
+
+nnoremap <C-f> :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
+
+nmap <F8> :TagbarToggle<CR>
+
+:set completeopt-=preview " For No Previews
+
+:colorscheme jellybeans
+
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+EOT
+
+	sudo apt install exuberant-ctags
+	yarn install --cmd ~/.local/share/nvim/plugged/coc.nvim
+	yarn build --cmd ~/.local/share/nvim/plugged/coc.nvim
+else
+	echo -e "\n'init.vim' already exists, no additional configuration will be done"
+fi
+echo -e "\nPost script configurations instructions..."
+echo -e "\nIf on wsl, please look at the link 'https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl' to be able to copy to clipboard directly from NeoVIM"
+echo -e "If vim-plug was installed please run PlugInstall on a nvim instance"
+echo -e 
 
