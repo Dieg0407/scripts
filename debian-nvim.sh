@@ -4,7 +4,7 @@
 #
 # This is based on the video provided in this url: https://www.youtube.com/watch?v=JWReY93Vl6g&t=8s&ab_channel=NeuralNine
 #
-# Last update: 2022-11-15
+# Last update: 2022-11-16
 
 echo "Updating packages..."
 sudo apt update 
@@ -25,7 +25,7 @@ nvm install --lts
 source ~/.bashrc
 
 echo -e "\nInstalling python3, pip3, npm and yarn"
-sudo apt install python3 python3-pip npm
+sudo apt install python3 python3-pip npm -y
 sudo npm install -g yarn
 
 source ~/.bashrc
@@ -40,8 +40,11 @@ mkdir -p ~/.config/nvim
 echo -e "\nInstalling VIM Plug"
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-if test -f "~/.config/nvim/init.vim" then
-	cat <<EOT >> ~/.config/nvim/init.vim
+INIT_VIM_FILE="~/.config/nvim/init.vim"
+if [ -f "$INIT_VIM_FILE" ]; then
+	echo -e "\n'init.vim' already exists, no additional configuration will be done"
+else 
+	cat > ~/.config/nvim/init.vim <<EOT
 :set number
 :set relativenumber
 :set autoindent
@@ -85,15 +88,13 @@ nmap <F8> :TagbarToggle<CR>
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 EOT
-
-	sudo apt install exuberant-ctags
-	yarn install --cmd ~/.local/share/nvim/plugged/coc.nvim
-	yarn build --cmd ~/.local/share/nvim/plugged/coc.nvim
-else
-	echo -e "\n'init.vim' already exists, no additional configuration will be done"
+	nvim -c 'PlugInstall'
+	sudo apt install exuberant-ctags -y
+	yarn --cwd ~/.local/share/nvim/plugged/coc.nvim/ install
+	yarn --cwd ~/.local/share/nvim/plugged/coc.nvim/ build
 fi
+
 echo -e "\nPost script configurations instructions..."
 echo -e "\nIf on wsl, please look at the link 'https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl' to be able to copy to clipboard directly from NeoVIM"
-echo -e "If vim-plug was installed please run PlugInstall on a nvim instance"
 echo -e 
 
