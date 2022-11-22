@@ -40,18 +40,18 @@ mkdir -p ~/.config/nvim
 echo -e "\nInstalling VIM Plug"
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-INIT_VIM_FILE="~/.config/nvim/init.vim"
+INIT_VIM_FILE="${HOME}/.config/nvim/init.vim"
 if [ -f "$INIT_VIM_FILE" ]; then
 	echo -e "\n'init.vim' already exists, no additional configuration will be done"
 else 
-	cat > ~/.config/nvim/init.vim <<EOT
+	cat > $INIT_VIM_FILE <<EOT
 :set number
 :set relativenumber
 :set autoindent
-:set tabstop=4
-:set shiftwidth=4
+:set tabstop=2
+:set shiftwidth=2
 :set smarttab
-:set softtabstop=4
+:set softtabstop=2
 :set mouse=a
 :set clipboard=unnamedplus
 
@@ -90,8 +90,15 @@ let g:NERDTreeDirArrowCollapsible="~"
 EOT
 	nvim -c 'PlugInstall'
 	sudo apt install exuberant-ctags -y
-	yarn --cwd ~/.local/share/nvim/plugged/coc.nvim/ install
-	yarn --cwd ~/.local/share/nvim/plugged/coc.nvim/ build
+	yarn --cwd ${HOME}/.local/share/nvim/plugged/coc.nvim/ install
+	yarn --cwd ${HOME}/.local/share/nvim/plugged/coc.nvim/ build
+
+	# setup basic key bindings for coc auto completion
+	echo 'inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"' >> $INIT_VIM_FILE
+	echo 'inoremap <silent><expr> <c-space> coc#refresh()' >> $INIT_VIM_FILE
+	echo 'inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"' >> $INIT_VIM_FILE
+	echo 'inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"' >> $INIT_VIM_FILE
+
 fi
 
 echo -e "\nPost script configurations instructions..."
