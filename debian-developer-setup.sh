@@ -5,7 +5,7 @@
 
 echo -e "\n\e[0;32mUpdating and installing basic utilities \e[0m"
 sudo apt update
-sudo apt install curl unzip zip lsb-release
+sudo apt install curl unzip zip lsb-release git
 
 # Node
 echo -e "\n\e[0;32mInstalling NVM\e[0m"
@@ -42,3 +42,6 @@ sdk install gradle
 sdk install maven
 sdk install springboot
 
+# setup some default configurations
+echo -e "\n\e[0;32mSetting some default configurations...\e[0m"
+git config --global init.defaultBranch main
