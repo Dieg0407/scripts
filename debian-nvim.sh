@@ -6,43 +6,43 @@
 #
 # Last update: 2022-11-16
 
-echo "Updating packages..."
+echo -e "\e[0;32mUpdating packages... \e[0m"
 sudo apt update 
 
-echo -e "\nInstalling 'curl', 'wget'"
+echo -e "\n\e[0;32mInstalling 'curl', 'wget' \e[0m"
 sudo apt install curl wget git -y
 
-echo -e "\nInstalling NVM"
+echo -e "\n\e[0;32mInstalling NVM \e[0m"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
 source ~/.bashrc
 
-echo -e "\nInstalling NodeJs LTS..."
+echo -e "\n\e[0;32mInstalling NodeJs LTS... \e[0m"
 NVM_DIR=$HOME/.nvm;
 source $NVM_DIR/nvm.sh;
 nvm install --lts
 
 source ~/.bashrc
 
-echo -e "\nInstalling python3, pip3, npm and yarn"
+echo -e "\n\e[0;32mInstalling python3, pip3, npm and yarn \e[0m"
 sudo apt install python3 python3-pip npm -y
 sudo npm install -g yarn
 
 source ~/.bashrc
 
-echo -e "\nInstalling NeoVIM"
+echo -e "\n\e[0;32mInstalling NeoVIM \e[0m"
 wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
 sudo apt install ./nvim-linux64.deb
 rm -f nvim-linux64.deb
 
-echo -e "\nConfiguring NeoVIM"
+echo -e "\n\e[0;32mConfiguring NeoVIM \e[0m"
 mkdir -p ~/.config/nvim
-echo -e "\nInstalling VIM Plug"
+echo -e "\n\e[0;32mInstalling VIM Plug \e[0m"
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 INIT_VIM_FILE="${HOME}/.config/nvim/init.vim"
 if [ -f "$INIT_VIM_FILE" ]; then
-  echo -e "\n'init.vim' already exists, no additional configuration will be done"
+  echo -e "\n\e[0;32m'init.vim' already exists, no additional configuration will be done \e[0m"
 else 
   cat > $INIT_VIM_FILE <<EOT
 :set number
@@ -101,7 +101,7 @@ EOT
   echo 'inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"' >> $INIT_VIM_FILE
 fi
 
-echo -e "\nPost script configurations instructions..."
-echo -e "\nIf on wsl, please look at the link 'https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl' to be able to copy to clipboard directly from NeoVIM"
+echo -e "\n\e[0;32mPost script configurations instructions... \e[0m"
+echo -e "\n\e[0;32mIf on wsl, please look at the link 'https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl' to be able to copy to clipboard directly from NeoVIM \e[0m"
 echo -e 
 
