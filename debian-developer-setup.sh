@@ -40,4 +40,5 @@ echo -e "\n\e[0;32mInstalling Java, Gradle and Maven\e[0m"
 sdk install java
 sdk install gradle
 sdk install maven
+sdk install springboot
 
