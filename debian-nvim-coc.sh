@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # This is a simple script to setup a somewhat usable nvim on a debian based distro 
+# that uses CoC as a completion tool
 #
 # This is based on the video provided in this url: https://www.youtube.com/watch?v=JWReY93Vl6g&t=8s&ab_channel=NeuralNine
 #
